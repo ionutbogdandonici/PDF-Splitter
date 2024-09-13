@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Splitter</title>
+</head>
+<body>
+<h1>PDF Splitter</h1>
+<h4>By Bogdan Donici</h4>
+<form id="pdf-form" action="/divide" method="POST" enctype="multipart/form-data">
+    <label for="pdf_file">Upload .pdf file: </label>
+    <input type="file" id="pdf_file" name="pdf_file" required><br><br>
+    <label for="start_page">Start page:</label>
+    <input type="number" id="start_page" name="start_page" placeholder="Es. 1"><br><br>
+    <label for="end_page">End page:</label>
+    <input type="number" id="end_page" name="end_page" placeholder="Es. 10"><br><br>
+    <label for="save_with_name">Save with name</label>
+    <input type="text" id="save_with_name" name="save_with_name"><br><br>
+    <input type="submit" value="Divide PDF">
+</form>
+<br>
+<div style="flex-direction: column">
+
+</div>
+<div style="display: flex; justify-content: space-around">
+    <div>
+        <h3>Preview of start page</h3>
+        <img src="" id="start_page_preview" alt="Preview of Start page" style="max-width: 400px">
+    </div>
+    <div>
+        <h3>Preview of end page</h3>
+        <img src="" id="end_page_preview" alt="Preview of End page" style="max-width: 400px">
+    </div>
+</div>
+<script>
+    const pdfFileInput = document.getElementById("pdf_file");
+    const startPageInput = document.getElementById("start_page")
+    const endPageInput = document.getElementById("end_page")
+    const startPagePreview = document.getElementById("start_page_preview")
+    const endPagePreview = document.getElementById("end_page_preview")
+
+    function updatePreviews() {
+        console.log("Entered method updatePreview")
+        const file = pdfFileInput.files[0];
+        const startPage = startPageInput.value;
+        const endPage = endPageInput.value;
+
+        if (file && startPage) {
+            fetchPreview(file, startPage, startPagePreview);
+        }
+        if (file && endPage) {
+            fetchPreview(file, endPage, endPagePreview);
+        }
+    }
+
+    function fetchPreview(file, pageNumber, imgElement) {
+        const formData = new FormData();
+        formData.append("pdf_file", file);
+        formData.append("page_number", pageNumber);
+
+        fetch("preview_page", {
+            method: "POST",
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error("Preview Generation Failed!");
+            }
+        }).then(blob => {
+            imgElement.src = URL.createObjectURL(blob);
+        }).catch(error => {
+            console.error("Error: ", error);
+            imgElement.alt = "Impossible to generate preview!"
+        })
+    }
+
+    pdfFileInput.addEventListener("change", updatePreviews);
+    startPageInput.addEventListener("input", updatePreviews);
+    endPageInput.addEventListener("input", updatePreviews);
+
+</script>
+</body>
+</html>
