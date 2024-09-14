@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <title>PDF Splitter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<header>
+    <h1>PDF Splitter</h1>
+    <p>By <strong>Bogdan Donici</strong></p>
+</header>
+<section class="form-container">
+    <form id="pdf-form">
+        <label for="pdf_file">Upload .pdf file:</label>
+        <input type="file" id="pdf_file" name="pdf_file"><br><br>
+
+        <label for="start_page">Start page:</label>
+        <input type="number" id="start_page" name="start_page"><br><br>
+
+        <label for="end_page">End page:</label>
+        <input type="number" id="end_page" name="end_page"><br><br>
+
+        <p id="page_count_text"></p>
+
+        <label for="save_with_name">Save with name:</label>
+        <input type="text" id="save_with_name" name="save_with_name"><br><br>
+        <button type="button" onclick="dividePdf()">Divide PDF</button>
+    </form>
+    <div class="previews">
+        <div>
+            <h3>Preview of Start Page</h3>
+            <img id="start_page_preview" alt="Preview of start page" src="">
+        </div>
+        <div>
+            <h3>Preview of End Page</h3>
+            <img id="end_page_preview" alt="Preview of end page" src="">
+        </div>
+    </div>
+</section>
+
+<div id="output"></div>
+
+<script src="scripts.js"></script>
+</html>
