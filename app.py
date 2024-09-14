@@ -1,6 +1,6 @@
 import os.path
 
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 from pdf2image import convert_from_bytes
@@ -48,7 +48,7 @@ def divide_pdf():
     output.seek(0)
 
     # Sanitization of save_with_name
-    save_with_name = os.path.basename(request.form['pdf_file']) + ".pdf"
+    save_with_name = request.form.get('save_with_name') + ".pdf"
 
     # Return divided file
     return send_file(output, as_attachment=True, download_name=save_with_name, mimetype="application/pdf")
@@ -79,6 +79,22 @@ def preview_page():
             return "Page not found!", 404
     except Exception as e:
         return str(e), 500
+
+
+# New route to get the number of pages in the PDF
+@app.route("/get_page_count", methods=['POST'])
+def get_page_count():
+    uploaded_file = request.files['pdf_file']
+    if uploaded_file.filename == "":
+        return jsonify({"error": "No file uploaded!"}), 400
+
+    # Count pages
+    try:
+        pdf_reader = PdfReader(uploaded_file)
+        num_pages = len(pdf_reader.pages)
+        return jsonify({"num_pages": num_pages}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

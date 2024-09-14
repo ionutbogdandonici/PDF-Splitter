@@ -10,12 +10,18 @@
 <form id="pdf-form" action="/divide" method="POST" enctype="multipart/form-data">
     <label for="pdf_file">Upload .pdf file: </label>
     <input type="file" id="pdf_file" name="pdf_file" required><br><br>
+
     <label for="start_page">Start page:</label>
     <input type="number" id="start_page" name="start_page" placeholder="Es. 1"><br><br>
+
     <label for="end_page">End page:</label>
     <input type="number" id="end_page" name="end_page" placeholder="Es. 10"><br><br>
+
+    <p id="page_count_text"></p>
+
     <label for="save_with_name">Save with name</label>
     <input type="text" id="save_with_name" name="save_with_name"><br><br>
+
     <input type="submit" value="Divide PDF">
 </form>
 <br>
@@ -34,10 +40,11 @@
 </div>
 <script>
     const pdfFileInput = document.getElementById("pdf_file");
-    const startPageInput = document.getElementById("start_page")
-    const endPageInput = document.getElementById("end_page")
-    const startPagePreview = document.getElementById("start_page_preview")
-    const endPagePreview = document.getElementById("end_page_preview")
+    const startPageInput = document.getElementById("start_page");
+    const endPageInput = document.getElementById("end_page");
+    const startPagePreview = document.getElementById("start_page_preview");
+    const endPagePreview = document.getElementById("end_page_preview");
+    const pageCountText = document.getElementById("page_count_text");
 
     function updatePreviews() {
         console.log("Entered method updatePreview")
@@ -75,7 +82,32 @@
         })
     }
 
-    pdfFileInput.addEventListener("change", updatePreviews);
+    pdfFileInput.addEventListener("change", () => {
+        const file = pdfFileInput.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append("pdf_file", file);
+
+            // Fetch the number of pages from the backend
+            fetch("get_page_count", {
+                method: "POST",
+                body: formData
+            }).then(
+                response => response.json()
+            ).then(data => {
+                if (data.num_pages) {
+                    pageCountText.textContent = `This document has ${data.num_pages} pages.`;
+                    // Set maximum value for end page input
+                    endPageInput.max = data.num_pages;
+                } else {
+                    pageCountText.textContent = `Error: ${data.error}`
+                }
+            }).catch(error => {
+                console.error("Error fetching page count: ", error)
+                pageCountText.textContent = "Error fetching page count."
+            })
+        }
+    });
     startPageInput.addEventListener("input", updatePreviews);
     endPageInput.addEventListener("input", updatePreviews);
 
