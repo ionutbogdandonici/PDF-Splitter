@@ -1,0 +1,61 @@
+body {
+    font-family: "IBM Plex Sans", serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+header {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.previews {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.previews div {
+    margin: 10px;
+}
+
+img {
+    max-width: 300px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .previews {
+        flex-direction: column;
+        align-items: center;
+    }
+}
