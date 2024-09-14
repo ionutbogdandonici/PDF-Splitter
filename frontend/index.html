@@ -6,27 +6,17 @@
     <title>PDF Splitter</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
+<!-- HEADER SECTION -->
 <header>
     <h1>PDF Splitter</h1>
-    <p>By <strong>Bogdan Donici</strong></p>
+    <p>By <strong>Donici Ionuț Bogdan</strong></p>
 </header>
-<section class="form-container">
-    <form id="pdf-form">
-        <label for="pdf_file">Upload .pdf file:</label>
-        <input type="file" id="pdf_file" name="pdf_file"><br><br>
 
-        <label for="start_page">Start page:</label>
-        <input type="number" id="start_page" name="start_page"><br><br>
+<!-- MAIN CONTENT SECTION -->
+<section class="container">
 
-        <label for="end_page">End page:</label>
-        <input type="number" id="end_page" name="end_page"><br><br>
-
-        <p id="page_count_text"></p>
-
-        <label for="save_with_name">Save with name:</label>
-        <input type="text" id="save_with_name" name="save_with_name"><br><br>
-        <button type="button" onclick="dividePdf()">Divide PDF</button>
-    </form>
+    <!-- PREVIEWS SECTION -->
     <div class="previews">
         <div>
             <h3>Preview of Start Page</h3>
@@ -37,8 +27,32 @@
             <img id="end_page_preview" alt="Preview of end page" src="">
         </div>
     </div>
+
+    <!-- FORM SECTION -->
+    <div class="form-container">
+        <form id="pdf-form">
+            <label for="pdf_file">Upload .pdf file:</label>
+            <input type="file" id="pdf_file" name="pdf_file">
+
+            <label for="start_page">Start page:</label>
+            <input type="number" id="start_page" name="start_page" placeholder="Es. 1">
+
+            <label for="end_page">End page:</label>
+            <input type="number" id="end_page" name="end_page" placeholder="Es. 9">
+
+            <!-- DYNAMIC PAGE COUNT TEXT -->
+            <p id="page_count_text"></p>
+
+            <label for="save_with_name">Save with name:</label>
+            <input type="text" id="save_with_name" name="save_with_name">
+
+            <!-- ACTION BUTTON -->
+            <button type="button" class="action-button" onclick="dividePdf()">Divide PDF</button>
+        </form>
+    </div>
 </section>
 
+<!-- AREA TO DISPLAY ANY OUTPUT MESSAGES -->
 <div id="output"></div>
 
 <script src="scripts.js"></script>
