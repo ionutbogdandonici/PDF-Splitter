@@ -22,6 +22,13 @@ pdfFileInput.addEventListener('change', handleFileChange);
 startPageInput.addEventListener('input', () => updatePagePreview(startPageInput, startPagePreview))
 endPageInput.addEventListener('input', () => updatePagePreview(endPageInput, endPagePreview))
 
+document.getElementById('pdf-form').addEventListener("keydown", (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        dividePdf();
+    }
+})
+
 // Functions
 async function handleFileChange(event) {
     uploadedFile = event.target.files[0];
